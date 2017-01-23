@@ -9,5 +9,3 @@ This repository provides codes, exercise and solution to supplement learning of 
 	- SVM Loss
 	- Softmax Loss
 - [2 Layer Neural Network](nn/)
-
-
