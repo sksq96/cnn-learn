@@ -2,7 +2,7 @@
 # @Author: shubham
 # @Date:   2017-01-26 05:50:51
 # @Last Modified by:   shubham
-# @Last Modified time: 2017-01-26 16:12:06
+# @Last Modified time: 2017-01-26 18:36:25
 
 import numpy as np
 
@@ -41,16 +41,37 @@ class TwoLayerNet:
 		if y is None:
 			return scores
 
-		# compute loss
-		data_loss = - scores[range(num_examples), y] + np.log(np.sum(np.exp(scores), axis=1)).reshape(-1, 1)
-		data_loss = np.mean(data_loss)
+		# class probabiliies and negative log 
+		exp_scores = np.exp(scores)
+		prob = exp_scores / np.sum(exp_scores, axis=1).reshape(-1, 1)
+		negative_log_prob = - np.log(prob[range(num_examples), y])
+
+		# loss
+		data_loss = np.mean(negative_log_prob)
 		reg_loss = 0.5 * reg * (np.sum(W1*W1) + np.sum(W2*W2))
 		loss = data_loss + reg_loss
 
 		# Backward Pass: Gradient
-		
+		grad = {}
 
-		return loss, {}
+		# backprob the gradient
+		dscores = prob
+		dscores[range(num_examples), y] -= 1
+		dscores /= num_examples
+
+		grad['W2'] = np.dot(hidden.T, dscores)
+		grad['b2'] = np.sum(dscores, axis=0)
+
+		dhidden = np.dot(dscores, W2.T)
+		dhidden[hidden <= 0] = 0
+
+		grad['W1'] = np.dot(X.T, dhidden)
+		grad['b1'] = np.sum(dhidden, axis=0)
+
+		grad['W2'] += reg * W2
+		grad['W1'] += reg * W1
+
+		return loss, grad
 
 	def train():
 		pass
