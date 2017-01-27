@@ -2,7 +2,7 @@
 # @Author: shubham
 # @Date:   2017-01-26 05:50:51
 # @Last Modified by:   shubham
-# @Last Modified time: 2017-01-26 18:36:25
+# @Last Modified time: 2017-01-26 19:29:20
 
 import numpy as np
 
@@ -73,10 +73,52 @@ class TwoLayerNet:
 
 		return loss, grad
 
-	def train():
-		pass
+	def train(self, X, y, Xval, yval, learning_rate=1e-3, learning_rate_decay=0.95, reg=1e-5, num_iters=100, batch_size=200, verbose=False):
+		
+		num_examples, dim = X.shape
+		num_classes = np.max(y) + 1
+		iterations_per_epoch = max(num_examples / batch_size, 1)
 
-	def predict():
-		pass
+		loss_history, train_acc_history, val_acc_history = [], [], []
+		
+		for it in range(num_iters):
+			# sample a mini batch
+			idx = np.random.choice(num_examples, batch_size)
+			Xbatch = X[idx]
+			ybatch = y[idx]
 
+			# find direction to update weights
+			loss, grads = self.loss(Xbatch, y=ybatch, reg=reg)
+			loss_history.append(loss)
+
+			for param in self.params:
+				self.params[param] -= grads[param] * learning_rate
+
+
+			if verbose and it % 100 == 0:
+				print('iteration %d / %d: loss %f' % (it, num_iters, loss))
+
+			# Every epoch, check train and val accuracy and decay learning rate.
+			if it % iterations_per_epoch == 0:
+				# Check accuracy
+				train_acc = (self.predict(Xbatch) == ybatch).mean()
+				val_acc = (self.predict(Xval) == yval).mean()
+				train_acc_history.append(train_acc)
+				val_acc_history.append(val_acc)
+
+				# Decay learning rate
+				learning_rate *= learning_rate_decay
+
+		return loss_history, train_acc_history, val_acc_history
+
+
+	def predict(self, X):
+		W1, b1 = self.params['W1'], self.params['b1']
+		W2, b2 = self.params['W2'], self.params['b2']
+		
+		h1 = np.dot(X, W1) + b1
+		h1[h1 < 0] = 0
+		scores = np.dot(h1, W2) + b2
+
+		return np.argmax(scores, axis=1)
 
