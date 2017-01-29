@@ -9,3 +9,4 @@ This repository provides codes, exercise and solution to supplement learning of 
 	- [SVM Loss](svm.ipynb)
 	- [Softmax Loss](softmax.ipynb)
 - [2 Layer Neural Network](nn.ipynb)
+- [Modular N-Layer Neural Network](fc-nets.ipynb)
