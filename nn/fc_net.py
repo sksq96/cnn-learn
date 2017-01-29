@@ -2,7 +2,7 @@
 # @Author: shubham
 # @Date:   2017-01-29 22:28:17
 # @Last Modified by:   shubham
-# @Last Modified time: 2017-01-30 00:49:55
+# @Last Modified time: 2017-01-30 02:04:13
 
 import numpy as np
 
@@ -146,6 +146,11 @@ class FullyConnectedNet(object):
 		self.dtype = dtype
 		self.params = {}
 
+		layer_dim = [input_dim] + hidden_dims + [num_classes]
+		for idx in range(self.num_layers):
+			self.params['W{}'.format(idx+1)] = weight_scale * np.random.randn(layer_dim[idx], layer_dim[idx+1])
+			self.params['b{}'.format(idx+1)] = np.zeros(layer_dim[idx+1])
+
 		############################################################################
 		# TODO: Initialize the parameters of the network, storing all values in    #
 		# the self.params dictionary. Store weights and biases for the first layer #
@@ -182,7 +187,7 @@ class FullyConnectedNet(object):
 			self.bn_params = [{'mode': 'train'} for i in xrange(self.num_layers - 1)]
 		
 		# Cast all parameters to the correct datatype
-		for k, v in self.params.iteritems():
+		for k, v in self.params.items():
 			self.params[k] = v.astype(dtype)
 
 
@@ -204,6 +209,9 @@ class FullyConnectedNet(object):
 				bn_param[mode] = mode
 
 		scores = None
+		
+		
+
 		############################################################################
 		# TODO: Implement the forward pass for the fully-connected net, computing  #
 		# the class scores for X and storing them in the scores variable.          #
