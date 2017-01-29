@@ -2,7 +2,7 @@
 # @Author: shubham
 # @Date:   2017-01-26 05:50:51
 # @Last Modified by:   shubham
-# @Last Modified time: 2017-01-26 19:29:20
+# @Last Modified time: 2017-01-28 16:28:12
 
 import numpy as np
 
@@ -96,16 +96,15 @@ class TwoLayerNet:
 
 
 			if verbose and it % 100 == 0:
-				print('iteration %d / %d: loss %f' % (it, num_iters, loss))
-
-			# Every epoch, check train and val accuracy and decay learning rate.
-			if it % iterations_per_epoch == 0:
 				# Check accuracy
 				train_acc = (self.predict(Xbatch) == ybatch).mean()
 				val_acc = (self.predict(Xval) == yval).mean()
 				train_acc_history.append(train_acc)
 				val_acc_history.append(val_acc)
+				print('iteration {} / {}: loss {}, train accuracy {}, val accuracy {}'.format(it, num_iters, loss, train_acc, val_acc))
 
+			# Every epoch, check train and val accuracy and decay learning rate.
+			if it % iterations_per_epoch == 0:
 				# Decay learning rate
 				learning_rate *= learning_rate_decay
 
