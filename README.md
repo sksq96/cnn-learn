@@ -4,9 +4,10 @@ This repository provides codes, exercise and solution to supplement learning of 
 
 ## Algorithms
 
-- [K-Nearest Neighbour](knn.ipynb)
+- [K-Nearest Neighbour](KNearestNeighbour.ipynb)
 - [Linear Classifier](linear/)
-	- [SVM Loss](svm.ipynb)
-	- [Softmax Loss](softmax.ipynb)
-- [2 Layer Neural Network](nn.ipynb)
-- [Modular N-Layer Neural Network](fc-nets.ipynb)
+	- [SVM Loss](SVM.ipynb)
+	- [Softmax Loss](Softmax.ipynb)
+- [2 Layer Neural Network](NeuralNets.ipynb)
+- [Modular N-Layer Neural Network](FullyConnectedNets.ipynb)
+- [Convolutional Networks](ConvolutionalNetworks.ipynb)
