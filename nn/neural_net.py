@@ -2,7 +2,7 @@
 # @Author: shubham
 # @Date:   2017-01-26 05:50:51
 # @Last Modified by:   shubham
-# @Last Modified time: 2017-01-28 16:28:12
+# @Last Modified time: 2017-02-20 02:10:36
 
 import numpy as np
 
@@ -73,7 +73,9 @@ class TwoLayerNet:
 
 		return loss, grad
 
-	def train(self, X, y, Xval, yval, learning_rate=1e-3, learning_rate_decay=0.95, reg=1e-5, num_iters=100, batch_size=200, verbose=False):
+	def train(self, X, y, Xval, yval, 
+		learning_rate=1e-3, learning_rate_decay=0.95, reg=1e-5, 
+		num_iters=100, batch_size=200, verbose=False):
 		
 		num_examples, dim = X.shape
 		num_classes = np.max(y) + 1
