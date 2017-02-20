@@ -2,7 +2,7 @@
 # @Author: shubham
 # @Date:   2017-01-29 21:32:33
 # @Last Modified by:   shubham
-# @Last Modified time: 2017-01-30 01:19:03
+# @Last Modified time: 2017-02-20 03:05:21
 
 import numpy as np
 
@@ -334,15 +334,28 @@ def conv_forward_naive(x, w, b, conv_param):
 		W' = 1 + (W + 2 * pad - WW) / stride
 	- cache: (x, w, b, conv_param)
 	"""
-	out = None
-	#############################################################################
-	# TODO: Implement the convolutional forward pass.                           #
-	# Hint: you can use the function np.pad for padding.                        #
-	#############################################################################
-	pass
-	#############################################################################
-	#                             END OF YOUR CODE                              #
-	#############################################################################
+	
+	N, C, H, W = x.shape
+	F, C, HH, WW = w.shape
+	s = conv_param['stride']
+	p = conv_param['pad']
+
+	# zero pad the input
+	x_pad = np.pad(x, ((0,), (0,), (p,), (p,)), 'constant')
+	# print(x_pad.shape)
+	
+	H_prime = int(1 + (H + 2*p - HH) / s)
+	W_prime = int(1 + (W + 2*p - WW) / s)
+	out = np.zeros((N, F, H_prime, W_prime))
+	# print(out.shape)
+
+	for n in range(N): # for each image
+		for f in range(F): # for each kernel
+			for i in range(H_prime):
+				for j in range(W_prime):
+					out[n, f, i, j] = np.sum(x_pad[n, :, i*s : i*s+HH, j*s : j*s+WW] * w[f, :]) + b[f]
+
+
 	cache = (x, w, b, conv_param)
 	return out, cache
 
